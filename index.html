@@ -17,19 +17,20 @@
         .active-choice { border-color: #2563eb !important; background-color: #eff6ff !important; }
         .photo-caption { font-family: 'Courier New', Courier, monospace; }
         
-        /* Ensure the logo behaves well in the header */
-        .header-logo { height: 3.5rem; width: auto; transition: transform 0.2s; }
+        /* ADJUST LOGO SIZE HERE: Change height to make it larger or smaller */
+        .header-logo { height: 5.5rem; width: auto; transition: transform 0.2s; }
         .header-logo:hover { transform: scale(1.05); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
 
     <!-- Header & Navigation -->
+    <!-- h-32 sets the height of the header 'shelf' -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-6 h-24 flex items-center justify-between">
+        <div class="max-w-6xl mx-auto px-6 h-32 flex items-center justify-between">
             <!-- Logo Replacement -->
             <button onclick="navigateTo('home')" class="flex items-center" aria-label="Go to Home">
-                <img src="Bubble Labs full logo.png" alt="Bubble Labs Logo" onerror="this.src='https://placehold.co/200x80/ffffff/2563eb?text=Bubble+Labs'" class="header-logo object-contain">
+                <img src="BubbleLabsLogo.png" alt="Bubble Labs Logo" onerror="this.src='https://placehold.co/200x120/ffffff/2563eb?text=Bubble+Labs'" class="header-logo object-contain">
             </button>
             
             <nav class="hidden md:flex items-center gap-8">
@@ -252,7 +253,7 @@
 
     <!-- Modal Success -->
     <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-6 z-[100]">
-        <div class="bg-white rounded-[2.5rem] p-10 max-sm-sm w-full text-center shadow-2xl">
+        <div class="bg-white rounded-[2.5rem] p-10 max-w-sm w-full text-center shadow-2xl">
             <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-black italic">!</div>
             <h2 class="text-2xl font-bold text-slate-900 mb-2">Transmitted</h2>
             <p id="modal-msg" class="text-slate-500 mb-8">Session request logged.</p>
