@@ -15,18 +15,21 @@
         .nav-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background: #2563eb; }
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.8); }
         .active-choice { border-color: #2563eb !important; background-color: #eff6ff !important; }
-        
-        /* Subtle animation for the goofy juxtaposition */
         .photo-caption { font-family: 'Courier New', Courier, monospace; }
+        
+        /* Ensure the logo behaves well in the header */
+        .header-logo { height: 3.5rem; width: auto; transition: transform 0.2s; }
+        .header-logo:hover { transform: scale(1.05); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
 
     <!-- Header & Navigation -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-            <button onclick="navigateTo('home')" class="text-2xl font-black tracking-tighter">
-                BUBBLE<span class="text-blue-600">LABS</span>
+        <div class="max-w-6xl mx-auto px-6 h-24 flex items-center justify-between">
+            <!-- Logo Replacement -->
+            <button onclick="navigateTo('home')" class="flex items-center" aria-label="Go to Home">
+                <img src="Bubble Labs full logo.png" alt="Bubble Labs Logo" onerror="this.src='https://placehold.co/200x80/ffffff/2563eb?text=Bubble+Labs'" class="header-logo object-contain">
             </button>
             
             <nav class="hidden md:flex items-center gap-8">
@@ -52,7 +55,7 @@
                     Physics, <span class="text-blue-600">meet FUN!</span>
                 </h1>
                 <p class="text-xl text-slate-500 leading-relaxed mb-10">
-                    High-performance bubble shows engineered for fleeting moments of shared magic. We transform public spaces into temporary realms of wonder.
+                    High-performance bubble shows engineered for fleeting moments of shared magic. We transform public space into temporary realms of wonder.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <button onclick="navigateTo('shop')" class="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold hover:scale-105 transition-transform">Explore Performances</button>
@@ -60,11 +63,11 @@
                 </div>
             </section>
 
-            <!-- Philosophy Section with Juxtaposition -->
+            <!-- Philosophy Section -->
             <section id="mission" class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="space-y-8">
                     <div class="inline-block bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-bold tracking-wide uppercase">The Purpose</div>
-                    <h2 class="text-4xl font-bold leading-tight text-slate-900">Engineering Joy is Serious Business.</h2>
+                    <h2 class="text-4xl font-bold leading-tight text-slate-900">Engineering joy is serious work.</h2>
                     <div class="space-y-4">
                         <p class="text-slate-600 text-lg leading-relaxed">
                             Bubble Labs exists to manufacture wonder. In a world increasingly defined by the permanent and the digital, we specialize in the ephemeral. Bubbles are a bridge between complex physics and simple human connection.
@@ -90,8 +93,8 @@
                         <img src="image2.jpg" alt="Dan in the Lab" onerror="this.src='https://placehold.co/800x450/1e293b/94a3b8?text=Image+Missing'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
                     </div>
-                    <p class="photo-caption text-xs text-slate-400 italic text-center px-8">
-                        Fig 1.1: Chief Joy Engineer: Professor Dan, Testing localized atmospheric disturbances.
+                    <p class="photo-caption text-xs text-slate-400 italic text-center px-8 leading-relaxed">
+                        Fig 1.1: Chief Joy Engineer: Professor Dan, testing localized atmospheric disturbances.
                     </p>
                 </div>
             </section>
@@ -249,7 +252,7 @@
 
     <!-- Modal Success -->
     <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-6 z-[100]">
-        <div class="bg-white rounded-[2.5rem] p-10 max-w-sm w-full text-center shadow-2xl">
+        <div class="bg-white rounded-[2.5rem] p-10 max-sm-sm w-full text-center shadow-2xl">
             <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-black italic">!</div>
             <h2 class="text-2xl font-bold text-slate-900 mb-2">Transmitted</h2>
             <p id="modal-msg" class="text-slate-500 mb-8">Session request logged.</p>
@@ -380,4 +383,3 @@
     </script>
 </body>
 </html>
-
