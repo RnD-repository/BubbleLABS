@@ -14,7 +14,7 @@
         .nav-active { color: #2563eb; position: relative; }
         .nav-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background: #2563eb; }
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.8); }
-        .option-card.active-choice { border-color: #2563eb; background-color: #eff6ff; }
+        .active-choice { border-color: #2563eb !important; background-color: #eff6ff !important; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
@@ -46,7 +46,7 @@
             <!-- Intro (Hero) -->
             <section class="text-center max-w-4xl mx-auto pt-12">
                 <h1 class="text-6xl md:text-8xl font-black tracking-tight mb-8">
-                   Physics, <span class="text-blue-600">meet FUN!.</span>
+                    Physics, <span class="text-blue-600">meet FUN!</span>
                 </h1>
                 <p class="text-xl text-slate-500 leading-relaxed mb-10">
                     High-performance bubble shows engineered for fleeting moments of shared magic. We transform public space into temporary realms of wonder.
@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="bg-slate-200 aspect-video rounded-3xl flex items-center justify-center text-slate-400 font-medium italic overflow-hidden shadow-2xl relative group">
-                    <img src="https://placehold.co/800x450/1e293b/94a3b8?text=Performance+Snapshot" alt="Performance Snapshot" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <img src="dan-bubbles.jpg" alt="Performance Snapshot" onerror="this.src='https://placehold.co/800x450/1e293b/94a3b8?text=Performance+Snapshot'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
                 </div>
             </section>
@@ -118,18 +118,10 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="aspect-square bg-slate-200 rounded-2xl overflow-hidden hover:opacity-90 transition-opacity">
-                         <img src="https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+1" alt="Session" class="w-full h-full object-cover">
-                    </div>
-                    <div class="aspect-square bg-slate-200 rounded-2xl overflow-hidden hover:opacity-90 transition-opacity">
-                         <img src="https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+2" alt="Session" class="w-full h-full object-cover">
-                    </div>
-                    <div class="aspect-square bg-slate-200 rounded-2xl overflow-hidden hover:opacity-90 transition-opacity">
-                         <img src="https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+3" alt="Session" class="w-full h-full object-cover">
-                    </div>
-                    <div class="aspect-square bg-slate-200 rounded-2xl overflow-hidden hover:opacity-90 transition-opacity">
-                         <img src="https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+4" alt="Session" class="w-full h-full object-cover">
-                    </div>
+                    <img src="gallery-1.jpg" alt="Session" onerror="this.src='https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+1'" class="aspect-square bg-slate-200 rounded-2xl object-cover hover:opacity-90 transition-opacity">
+                    <img src="gallery-2.jpg" alt="Session" onerror="this.src='https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+2'" class="aspect-square bg-slate-200 rounded-2xl object-cover hover:opacity-90 transition-opacity">
+                    <img src="gallery-3.jpg" alt="Session" onerror="this.src='https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+3'" class="aspect-square bg-slate-200 rounded-2xl object-cover hover:opacity-90 transition-opacity">
+                    <img src="gallery-4.jpg" alt="Session" onerror="this.src='https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+4'" class="aspect-square bg-slate-200 rounded-2xl object-cover hover:opacity-90 transition-opacity">
                 </div>
             </section>
 
@@ -147,13 +139,13 @@
                             <h3 class="text-xl font-bold text-slate-700 uppercase tracking-widest text-sm">Select Scale</h3>
                         </div>
                         <div class="grid md:grid-cols-2 gap-4">
-                            <button onclick="setBase('Mobile Set', 175)" id="btn-single" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all active-choice">
+                            <button onclick="setBase('Roving', 175)" id="btn-roving" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all active-choice">
                                 <div class="font-bold text-xl">Roving Performance</div>
-                                <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Continuous, suitabtle for Open Gatherings.</p>
+                                <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Continuous, subtle for Open Gatherings.</p>
                                 <span class="text-blue-600 font-bold text-2xl">$175.00 p/h<span class="text-xs font-normal text-slate-400 ml-1">base</span></span>
                             </button>
-                            <button onclick="setBase('Station Set', 210)" id="btn-dual" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all">
-                                <div class="font-bold text-xl">Stationary Performance </div>
+                            <button onclick="setBase('Stationary', 210)" id="btn-stationary" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all">
+                                <div class="font-bold text-xl">Stationary Performance</div>
                                 <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Immersive, Focused Setup for Full-Range Performance.</p>
                                 <span class="text-blue-600 font-bold text-2xl">$210.00 p/h<span class="text-xs font-normal text-slate-400 ml-1">base</span></span>
                             </button>
@@ -187,7 +179,7 @@
                         <div class="space-y-4 mb-10 text-sm">
                             <div class="flex justify-between font-medium">
                                 <span class="text-slate-400 text-xs uppercase tracking-widest">Configuration</span>
-                                <span id="cart-core" class="text-slate-900 font-bold">Ambient Set</span>
+                                <span id="cart-core" class="text-slate-900 font-bold">Roving</span>
                             </div>
                             <div class="flex justify-between font-medium">
                                 <span class="text-slate-400 text-xs uppercase tracking-widest">Mood Theme</span>
@@ -212,7 +204,7 @@
         <div id="view-bookings" class="view-section max-w-3xl mx-auto">
             <div class="bg-white p-12 rounded-[3rem] border border-slate-200 shadow-sm">
                 <h2 class="text-4xl font-bold mb-2">Performance Inquiry</h2>
-                <p class="text-slate-400 mb-12 italic">Whether paid engagements or Community Joy deployments, we engineering the atmosphere.</p>
+                <p class="text-slate-400 mb-12 italic">Whether paid engagements or Community Joy deployments, we are engineering the atmosphere.</p>
 
                 <form class="space-y-8" id="booking-form">
                     <div class="grid md:grid-cols-2 gap-8">
@@ -289,7 +281,7 @@
             { name: 'Ghost White', hex: '#f8fafc' }
         ];
 
-        let state = { base: { name: 'Ambient Set', price: 45 }, color: palette[1] };
+        let state = { base: { name: 'Roving', price: 175 }, color: palette[1] };
 
         // Core View Switcher
         window.navigateTo = (viewId) => {
@@ -322,10 +314,8 @@
 
         window.setBase = (name, price) => {
             state.base = { name, price };
-            document.getElementById('btn-single').classList.toggle('active-choice', name === 'Ambient Set');
-            document.getElementById('btn-single').classList.toggle('border-blue-600', name === 'Ambient Set');
-            document.getElementById('btn-dual').classList.toggle('active-choice', name === 'High-Density');
-            document.getElementById('btn-dual').classList.toggle('border-blue-600', name === 'High-Density');
+            document.getElementById('btn-roving').classList.toggle('active-choice', name === 'Roving');
+            document.getElementById('btn-stationary').classList.toggle('active-choice', name === 'Stationary');
             updateDisplay();
         };
 
@@ -369,12 +359,4 @@
         };
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
