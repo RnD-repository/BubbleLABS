@@ -15,6 +15,9 @@
         .nav-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background: #2563eb; }
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.8); }
         .active-choice { border-color: #2563eb !important; background-color: #eff6ff !important; }
+        
+        /* Subtle animation for the goofy juxtaposition */
+        .photo-caption { font-family: 'Courier New', Courier, monospace; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
@@ -43,7 +46,7 @@
         <!-- VIEW: HOME -->
         <div id="view-home" class="view-section active space-y-32">
             
-            <!-- Intro (Hero) -->
+            <!-- Hero -->
             <section class="text-center max-w-4xl mx-auto pt-12">
                 <h1 class="text-6xl md:text-8xl font-black tracking-tight mb-8">
                     Physics, <span class="text-blue-600">meet FUN!</span>
@@ -53,21 +56,21 @@
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <button onclick="navigateTo('shop')" class="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold hover:scale-105 transition-transform">Explore Performances</button>
-                    <a href="#mission" class="bg-white border border-slate-200 px-10 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-colors">The Philosophy</a>
+                    <a href="#mission" class="bg-white border border-slate-200 px-10 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-colors text-center">The Philosophy</a>
                 </div>
             </section>
 
-            <!-- Philosophy Section -->
+            <!-- Philosophy Section with Juxtaposition -->
             <section id="mission" class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="space-y-8">
                     <div class="inline-block bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-bold tracking-wide uppercase">The Purpose</div>
                     <h2 class="text-4xl font-bold leading-tight text-slate-900">Engineering joy is serious work.</h2>
                     <div class="space-y-4">
                         <p class="text-slate-600 text-lg leading-relaxed">
-                            Bubble Labs exists to manufacture wonder. In a world increasingly defined by the permanent and the digital, we specialize in the ephemeral. Bubbles are a bridge between complex physics and simple human connection—a temporary bloom of color that reminds us to be present.
+                            Bubble Labs exists to manufacture wonder. In a world increasingly defined by the permanent and the digital, we specialize in the ephemeral. Bubbles are a bridge between complex physics and simple human connection.
                         </p>
                         <p class="text-slate-600 text-lg leading-relaxed font-medium">
-                            We curate these moments of shared magic because we believe joy shouldn't be a luxury. It is a fundamental atmospheric requirement for a happy, healthy community.
+                            We curate these moments because joy shouldn't be a luxury. It is a fundamental atmospheric requirement for a healthy community.
                         </p>
                     </div>
                     <div class="grid grid-cols-2 gap-6 pt-4 border-t border-slate-200">
@@ -77,14 +80,19 @@
                         </div>
                         <div>
                             <div class="text-3xl font-black text-blue-600 italic">CommunityJOY</div>
-                            <div class="text-sm text-slate-400 font-bold uppercase tracking-wider">Reciprocity Initiatives</div>
+                            <div class="text-sm text-slate-400 font-bold uppercase tracking-wider">Reciprocity</div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-slate-200 aspect-video rounded-3xl flex items-center justify-center text-slate-400 font-medium italic overflow-hidden shadow-2xl relative group">
-                    <!-- Main Image Updated to image2.jpg -->
-                    <img src="image2.jpg" alt="Performance Snapshot" onerror="this.src='https://placehold.co/800x450/1e293b/94a3b8?text=Snapshot+Loading...'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+                
+                <div class="space-y-4">
+                    <div class="bg-slate-200 aspect-video rounded-3xl flex items-center justify-center text-slate-400 font-medium italic overflow-hidden shadow-2xl relative group">
+                        <img src="image2.jpg" alt="Dan in the Lab" onerror="this.src='https://placehold.co/800x450/1e293b/94a3b8?text=Image+Missing'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
+                    </div>
+                    <p class="photo-caption text-xs text-slate-400 italic text-center px-8">
+                        Fig 1.1: Chief Joy Engineer: Professor Dan, Testing localized atmospheric disturbances.
+                    </p>
                 </div>
             </section>
 
@@ -94,23 +102,23 @@
                 <div class="grid md:grid-cols-3 gap-8">
                     <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
                         <div class="text-blue-600 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">"The performance scale was incredible. It wasn't just bubbles; Professor Dan changed the entire mood of the street for two hours."</p>
+                        <p class="text-slate-600 mb-6 italic leading-relaxed">"The scale was incredible. Professor Dan changed the entire mood of the street for two hours."</p>
                         <span class="font-bold text-slate-900">— Event Coordinator</span>
                     </div>
                     <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
                         <div class="text-blue-600 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">"A brilliant intersection of alluring wonder and fun. Mesmerizing for all ages."</p>
+                        <p class="text-slate-600 mb-6 italic leading-relaxed">"A brilliant intersection of wonder and fun. Mesmerizing for all ages."</p>
                         <span class="font-bold text-slate-900">— Community Curator</span>
                     </div>
                     <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
                         <div class="text-blue-600 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">"Reliable, high-output, and undeniably beautiful. Our go-to for instant street wonder."</p>
+                        <p class="text-slate-600 mb-6 italic leading-relaxed">"Reliable, high-output, and undeniably beautiful. Our go-to for instant wonder."</p>
                         <span class="font-bold text-slate-900">— Project Lead</span>
                     </div>
                 </div>
             </section>
 
-            <!-- Gallery -->
+            <!-- Archives -->
             <section>
                 <div class="flex justify-between items-end mb-12">
                     <div>
@@ -125,15 +133,13 @@
                     <img src="gallery-4.jpg" alt="Session" onerror="this.src='https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+4'" class="aspect-square bg-slate-200 rounded-2xl object-cover hover:opacity-90 transition-opacity">
                 </div>
             </section>
-
         </div>
 
-        <!-- VIEW: SHOP (Systems) -->
+        <!-- VIEW: SHOP (Performances) -->
         <div id="view-shop" class="view-section">
             <div class="grid lg:grid-cols-3 gap-12">
                 <div class="lg:col-span-2 space-y-12">
                     <h2 class="text-4xl font-bold">Performance Tiers</h2>
-                    
                     <div class="space-y-6">
                         <div class="flex items-center gap-4">
                             <span class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold">1</span>
@@ -141,18 +147,17 @@
                         </div>
                         <div class="grid md:grid-cols-2 gap-4">
                             <button onclick="setBase('Roving', 175)" id="btn-roving" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all active-choice">
-                                <div class="font-bold text-xl">Roving Performance</div>
-                                <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Continuous, subtle for Open Gatherings.</p>
-                                <span class="text-blue-600 font-bold text-2xl">$175.00 p/h<span class="text-xs font-normal text-slate-400 ml-1">base</span></span>
+                                <div class="font-bold text-xl">Roving</div>
+                                <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Continuous, subtle for open gatherings.</p>
+                                <span class="text-blue-600 font-bold text-2xl">$175.00 p/h</span>
                             </button>
                             <button onclick="setBase('Stationary', 210)" id="btn-stationary" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all">
-                                <div class="font-bold text-xl">Stationary Performance</div>
-                                <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Immersive, Focused Setup for Full-Range Performance.</p>
-                                <span class="text-blue-600 font-bold text-2xl">$210.00 p/h<span class="text-xs font-normal text-slate-400 ml-1">base</span></span>
+                                <div class="font-bold text-xl">Stationary</div>
+                                <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Immersive, focused setup for full-range wonder.</p>
+                                <span class="text-blue-600 font-bold text-2xl">$210.00 p/h</span>
                             </button>
                         </div>
                     </div>
-
                     <div class="space-y-6">
                          <div class="flex items-center gap-4">
                             <span class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold">2</span>
@@ -165,8 +170,7 @@
                 <!-- Sticky Summary -->
                 <div class="lg:col-span-1">
                     <div class="glass-card rounded-[2.5rem] shadow-xl p-8 sticky top-32">
-                        <h3 class="text-xl font-bold mb-8">Current Package</h3>
-                        
+                        <h3 class="text-xl font-bold mb-8">Package Summary</h3>
                         <div class="bg-slate-50 rounded-2xl p-10 mb-8 flex justify-center items-center">
                             <svg id="machine-svg" viewBox="0 0 100 100" class="w-32 h-32 transition-all duration-500 drop-shadow-xl">
                                 <rect id="svg-body" x="20" y="30" width="60" height="50" rx="15" fill="#3b82f6" />
@@ -176,25 +180,22 @@
                                 <circle cx="70" cy="85" r="8" fill="#0f172a" />
                             </svg>
                         </div>
-
                         <div class="space-y-4 mb-10 text-sm">
                             <div class="flex justify-between font-medium">
-                                <span class="text-slate-400 text-xs uppercase tracking-widest">Configuration</span>
+                                <span class="text-slate-400 text-xs uppercase tracking-widest">Scale</span>
                                 <span id="cart-core" class="text-slate-900 font-bold">Roving</span>
                             </div>
                             <div class="flex justify-between font-medium">
-                                <span class="text-slate-400 text-xs uppercase tracking-widest">Mood Theme</span>
+                                <span class="text-slate-400 text-xs uppercase tracking-widest">Mood</span>
                                 <span id="cart-color" class="text-slate-900 font-bold">Electric Blue</span>
                             </div>
                         </div>
-
                         <div class="flex justify-between items-end pb-8 border-t border-slate-100 pt-8">
                             <span class="font-bold text-slate-400 text-xs uppercase tracking-widest">Quote Base</span>
                             <span id="total-price" class="text-3xl font-black text-blue-600 tracking-tighter">$175.00</span>
                         </div>
-
                         <button id="order-trigger" class="w-full bg-blue-600 text-white font-bold py-5 rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
-                            Reserve Configuration
+                            Reserve
                         </button>
                     </div>
                 </div>
@@ -205,50 +206,45 @@
         <div id="view-bookings" class="view-section max-w-3xl mx-auto">
             <div class="bg-white p-12 rounded-[3rem] border border-slate-200 shadow-sm">
                 <h2 class="text-4xl font-bold mb-2">Performance Inquiry</h2>
-                <p class="text-slate-400 mb-12 italic">Whether paid engagements or Community Joy deployments, we are engineering the atmosphere.</p>
-
+                <p class="text-slate-400 mb-12 italic">Engineering the atmosphere for community and celebration.</p>
                 <form class="space-y-8" id="booking-form">
                     <div class="grid md:grid-cols-2 gap-8">
                         <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Full Name</label>
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Name</label>
                             <input type="text" name="name" required class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Enter name...">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Email Address</label>
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Email</label>
                             <input type="email" name="email" required class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Enter email...">
                         </div>
                     </div>
-
                     <div class="space-y-4">
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Session Type</label>
+                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Type</label>
                         <div class="grid md:grid-cols-2 gap-4">
                             <label class="relative cursor-pointer group">
                                 <input type="radio" name="bookingType" value="paid" class="peer hidden" checked>
                                 <div class="p-6 border-2 border-slate-100 rounded-2xl peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all">
-                                    <div class="font-bold text-slate-900">Paid Performance</div>
-                                    <div class="text-xs text-slate-400">Events, Corporate, Weddings.</div>
+                                    <div class="font-bold text-slate-900">Paid</div>
+                                    <div class="text-xs text-slate-400">Corporate, Weddings, etc.</div>
                                 </div>
                             </label>
                             <label class="relative cursor-pointer group">
                                 <input type="radio" name="bookingType" value="community" class="peer hidden">
                                 <div class="p-6 border-2 border-slate-100 rounded-2xl peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all">
                                     <div class="font-bold text-slate-900">Community Joy</div>
-                                    <div class="text-xs text-slate-400">Public Space, Non-Profit, Local Action.</div>
+                                    <div class="text-xs text-slate-400">Non-Profit, Public Space.</div>
                                 </div>
                             </label>
                         </div>
                     </div>
-
                     <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Atmospheric Requirements</label>
-                        <textarea name="details" rows="5" class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Tell us about the space and your vision..."></textarea>
+                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Vision</label>
+                        <textarea name="details" rows="5" class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Tell us about the magic..."></textarea>
                     </div>
-
-                    <button type="submit" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl hover:bg-black transition-all shadow-xl">Send Inquiry</button>
+                    <button type="submit" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl hover:bg-black transition-all">Transmit Inquiry</button>
                 </form>
             </div>
         </div>
-
     </main>
 
     <!-- Modal Success -->
@@ -266,7 +262,6 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Vars
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'bubble-labs-pwa';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "demo", authDomain: "demo", projectId: "demo" };
         const app = initializeApp(firebaseConfig);
@@ -284,24 +279,21 @@
 
         let state = { base: { name: 'Roving', price: 175 }, color: palette[1] };
 
-        // Core View Switcher - explicitly attached to window
         window.navigateTo = (viewId) => {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            const targetView = document.getElementById(`view-${viewId}`);
-            if (targetView) targetView.classList.add('active');
+            const target = document.getElementById(`view-${viewId}`);
+            if (target) target.classList.add('active');
             
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('nav-active'));
             const activeNav = document.getElementById(`nav-${viewId}`);
             if (activeNav) activeNav.classList.add('nav-active');
-            
             window.scrollTo(0, 0);
         };
 
-        // UI Handlers
         window.buildPalette = () => {
             const container = document.getElementById('color-palette');
             if (!container) return;
-            container.innerHTML = ''; // Clear existing
+            container.innerHTML = '';
             palette.forEach(color => {
                 const btn = document.createElement('button');
                 btn.className = `w-14 h-14 rounded-[1.2rem] border-4 border-white shadow-sm ring-2 ring-slate-100 transition-all hover:scale-110 ${state.color.name === color.name ? 'ring-blue-600 scale-110' : ''}`;
@@ -337,7 +329,6 @@
             if (svgBody) svgBody.style.fill = state.color.hex;
         };
 
-        // Submissions
         window.submitData = async (coll, data) => {
             if (!currentUserId) return;
             const entryId = crypto.randomUUID();
@@ -346,18 +337,12 @@
                     ...data, uid: currentUserId, timestamp: serverTimestamp()
                 });
                 showModal(coll === 'orders' ? 'Atmospheric package archived.' : 'Inquiry transmitted to the lab.');
-            } catch (err) {
-                console.error("Submission failed:", err);
-            }
+            } catch (err) { console.error(err); }
         };
 
-        // UI trigger for orders
         const orderTrigger = document.getElementById('order-trigger');
-        if (orderTrigger) {
-            orderTrigger.onclick = () => window.submitData('orders', { config: state });
-        }
+        if (orderTrigger) orderTrigger.onclick = () => window.submitData('orders', { config: state });
 
-        // UI trigger for booking form
         const bookingForm = document.getElementById('booking-form');
         if (bookingForm) {
             bookingForm.onsubmit = (e) => {
@@ -379,7 +364,6 @@
             if (modal) modal.classList.add('hidden');
         };
 
-        // Initializer
         window.addEventListener('load', async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined') {
@@ -387,14 +371,9 @@
                 } else {
                     await signInAnonymously(auth);
                 }
-            } catch (authError) {
-                console.error("Auth failed:", authError);
-            }
+            } catch (e) { console.error(e); }
 
-            onAuthStateChanged(auth, user => { 
-                if(user) currentUserId = user.uid; 
-            });
-
+            onAuthStateChanged(auth, user => { if(user) currentUserId = user.uid; });
             window.buildPalette();
             window.updateDisplay();
         });
