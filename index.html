@@ -82,7 +82,8 @@
                     </div>
                 </div>
                 <div class="bg-slate-200 aspect-video rounded-3xl flex items-center justify-center text-slate-400 font-medium italic overflow-hidden shadow-2xl relative group">
-                    <img src="dan-bubbles.jpg" alt="Performance Snapshot" onerror="this.src='https://placehold.co/800x450/1e293b/94a3b8?text=Performance+Snapshot'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <!-- Main Image Updated to image2.jpg -->
+                    <img src="image2.jpg" alt="Performance Snapshot" onerror="this.src='https://placehold.co/800x450/1e293b/94a3b8?text=Snapshot+Loading...'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
                 </div>
             </section>
@@ -283,10 +284,11 @@
 
         let state = { base: { name: 'Roving', price: 175 }, color: palette[1] };
 
-        // Core View Switcher
+        // Core View Switcher - explicitly attached to window
         window.navigateTo = (viewId) => {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            document.getElementById(`view-${viewId}`).classList.add('active');
+            const targetView = document.getElementById(`view-${viewId}`);
+            if (targetView) targetView.classList.add('active');
             
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('nav-active'));
             const activeNav = document.getElementById(`nav-${viewId}`);
@@ -296,8 +298,10 @@
         };
 
         // UI Handlers
-        function buildPalette() {
+        window.buildPalette = () => {
             const container = document.getElementById('color-palette');
+            if (!container) return;
+            container.innerHTML = ''; // Clear existing
             palette.forEach(color => {
                 const btn = document.createElement('button');
                 btn.className = `w-14 h-14 rounded-[1.2rem] border-4 border-white shadow-sm ring-2 ring-slate-100 transition-all hover:scale-110 ${state.color.name === color.name ? 'ring-blue-600 scale-110' : ''}`;
@@ -310,53 +314,90 @@
                 };
                 container.appendChild(btn);
             });
-        }
+        };
 
         window.setBase = (name, price) => {
             state.base = { name, price };
-            document.getElementById('btn-roving').classList.toggle('active-choice', name === 'Roving');
-            document.getElementById('btn-stationary').classList.toggle('active-choice', name === 'Stationary');
+            const rovingBtn = document.getElementById('btn-roving');
+            const stationaryBtn = document.getElementById('btn-stationary');
+            if (rovingBtn) rovingBtn.classList.toggle('active-choice', name === 'Roving');
+            if (stationaryBtn) stationaryBtn.classList.toggle('active-choice', name === 'Stationary');
             updateDisplay();
         };
 
-        function updateDisplay() {
-            document.getElementById('cart-core').innerText = state.base.name;
-            document.getElementById('cart-color').innerText = state.color.name;
-            document.getElementById('total-price').innerText = `$${state.base.price.toFixed(2)}`;
-            document.getElementById('svg-body').style.fill = state.color.hex;
-        }
+        window.updateDisplay = () => {
+            const cartCore = document.getElementById('cart-core');
+            const cartColor = document.getElementById('cart-color');
+            const totalPrice = document.getElementById('total-price');
+            const svgBody = document.getElementById('svg-body');
+
+            if (cartCore) cartCore.innerText = state.base.name;
+            if (cartColor) cartColor.innerText = state.color.name;
+            if (totalPrice) totalPrice.innerText = `$${state.base.price.toFixed(2)}`;
+            if (svgBody) svgBody.style.fill = state.color.hex;
+        };
 
         // Submissions
-        async function submitData(coll, data) {
+        window.submitData = async (coll, data) => {
             if (!currentUserId) return;
             const entryId = crypto.randomUUID();
-            await setDoc(doc(db, `/artifacts/${appId}/public/data/${coll}/${entryId}`), {
-                ...data, uid: currentUserId, timestamp: serverTimestamp()
-            });
-            showModal(coll === 'orders' ? 'Atmospheric package archived.' : 'Inquiry transmitted to the lab.');
-        }
-
-        document.getElementById('order-trigger').onclick = () => submitData('orders', { config: state });
-        document.getElementById('booking-form').onsubmit = (e) => {
-            e.preventDefault();
-            submitData('bookings', Object.fromEntries(new FormData(e.target).entries()));
-            e.target.reset();
+            try {
+                await setDoc(doc(db, `/artifacts/${appId}/public/data/${coll}/${entryId}`), {
+                    ...data, uid: currentUserId, timestamp: serverTimestamp()
+                });
+                showModal(coll === 'orders' ? 'Atmospheric package archived.' : 'Inquiry transmitted to the lab.');
+            } catch (err) {
+                console.error("Submission failed:", err);
+            }
         };
 
-        function showModal(msg) {
-            document.getElementById('modal-msg').innerText = msg;
-            document.getElementById('modal').classList.remove('hidden');
+        // UI trigger for orders
+        const orderTrigger = document.getElementById('order-trigger');
+        if (orderTrigger) {
+            orderTrigger.onclick = () => window.submitData('orders', { config: state });
         }
-        window.closeModal = () => document.getElementById('modal').classList.add('hidden');
+
+        // UI trigger for booking form
+        const bookingForm = document.getElementById('booking-form');
+        if (bookingForm) {
+            bookingForm.onsubmit = (e) => {
+                e.preventDefault();
+                window.submitData('bookings', Object.fromEntries(new FormData(e.target).entries()));
+                e.target.reset();
+            };
+        }
+
+        window.showModal = (msg) => {
+            const modalMsg = document.getElementById('modal-msg');
+            const modal = document.getElementById('modal');
+            if (modalMsg) modalMsg.innerText = msg;
+            if (modal) modal.classList.remove('hidden');
+        };
+
+        window.closeModal = () => {
+            const modal = document.getElementById('modal');
+            if (modal) modal.classList.add('hidden');
+        };
 
         // Initializer
-        window.onload = async () => {
-            if (typeof __initial_auth_token !== 'undefined') await signInWithCustomToken(auth, __initial_auth_token);
-            else await signInAnonymously(auth);
-            onAuthStateChanged(auth, user => { if(user) currentUserId = user.uid; });
-            buildPalette();
-            updateDisplay();
-        };
+        window.addEventListener('load', async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined') {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (authError) {
+                console.error("Auth failed:", authError);
+            }
+
+            onAuthStateChanged(auth, user => { 
+                if(user) currentUserId = user.uid; 
+            });
+
+            window.buildPalette();
+            window.updateDisplay();
+        });
     </script>
 </body>
 </html>
