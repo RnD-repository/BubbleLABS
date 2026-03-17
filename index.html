@@ -7,256 +7,250 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            /* LEARNING NOTE 1: CSS Variables (The 'Master Dials')
+               --header-height: Controls the vertical 'shelf' for the logo.
+               By changing this one number, the entire page's top-spacing adjusts. */
+            --header-height: 12rem; 
+            --mini-bar-height: 0.5rem; 
+        }
+
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        
+        /* THE SMART HEADER (The 'Spine') */
+        #main-header {
+            height: var(--header-height);
+            /* 'transition' creates the sliding effect. 'transform' moves the element 
+               along the Y-axis (up and down) without breaking the rest of the layout. */
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
+            transform: translateY(0);
+        }
+
+        /* LEARNING NOTE 2: Scrolled State
+           This rule activates when the script adds '.scrolled' to the <body>. 
+           It 'pushes' the header up by exactly its own height. */
+        body.scrolled #main-header {
+            transform: translateY(calc(-1 * var(--header-height)));
+        }
+
+        /* Overlays the menu back onto the screen when manually expanded. */
+        body.header-expanded #main-header {
+            transform: translateY(0) !important;
+            background-color: white;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* THE TRIGGER BAR (The interactive sliver) */
+        #header-trigger {
+            height: var(--mini-bar-height);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        body.scrolled #header-trigger {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         .view-section { display: none; }
         .view-section.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
         .nav-active { color: #2563eb; position: relative; }
         .nav-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background: #2563eb; }
+        
+        .header-logo { 
+            height: 10rem; 
+            width: auto; 
+            transition: all 0.3s ease; 
+        }
+
+        .photo-caption { font-family: 'Courier New', Courier, monospace; }
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.8); }
         .active-choice { border-color: #2563eb !important; background-color: #eff6ff !important; }
-        .photo-caption { font-family: 'Courier New', Courier, monospace; }
-        
-        /* ADJUST LOGO SIZE HERE: Change height to make it larger or smaller */
-        .header-logo { height: 5.5rem; width: auto; transition: transform 0.2s; }
-        .header-logo:hover { transform: scale(1.05); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
 
-    <!-- Header & Navigation -->
-    <!-- h-32 sets the height of the header 'shelf' -->
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-6 h-32 flex items-center justify-between">
-            <!-- Logo Replacement -->
-            <button onclick="navigateTo('home')" class="flex items-center" aria-label="Go to Home">
-                <img src="BubbleLabsLogo.png" alt="Bubble Labs Logo" onerror="this.src='https://placehold.co/200x120/ffffff/2563eb?text=Bubble+Labs'" class="header-logo object-contain">
+    <!-- MINI TRIGGER BAR -->
+    <div id="header-trigger" onclick="toggleHeader()" class="fixed top-0 left-0 w-full bg-blue-600 z-[60] cursor-pointer hover:h-4 transition-all flex items-center justify-center">
+        <span class="text-[8px] text-white font-bold tracking-widest opacity-0 hover:opacity-100 transition-opacity uppercase">Open Menu</span>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header id="main-header" class="fixed top-0 left-0 w-full bg-white z-50 border-b border-slate-200 overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
+            <!-- Logo Section -->
+            <button onclick="navigateTo('home'); resetHeader();" class="flex items-center" aria-label="Go to Home">
+                <img src="BubbleLabsLogo.png" 
+                     alt="Bubble Labs Logo" 
+                     onerror="this.src='https://placehold.co/400x200/ffffff/2563eb?text=Logo+Missing'" 
+                     class="header-logo object-contain">
             </button>
             
-            <nav class="hidden md:flex items-center gap-8">
-                <button onclick="navigateTo('home')" id="nav-home" class="nav-active font-semibold text-slate-600 hover:text-blue-600 transition-colors">Home</button>
-                <button onclick="navigateTo('shop')" id="nav-shop" class="font-semibold text-slate-600 hover:text-blue-600 transition-colors">Performances</button>
-                <button onclick="navigateTo('bookings')" id="nav-bookings" class="font-semibold text-slate-600 hover:text-blue-600 transition-colors">Bookings</button>
+            <nav class="hidden md:flex items-center gap-10">
+                <button onclick="navigateTo('home'); resetHeader();" id="nav-home" class="nav-active font-bold text-slate-600 hover:text-blue-600 transition-colors uppercase tracking-tight">Home</button>
+                <button onclick="navigateTo('shop'); resetHeader();" id="nav-shop" class="font-bold text-slate-600 hover:text-blue-600 transition-colors uppercase tracking-tight">Performances</button>
+                <button onclick="navigateTo('bookings'); resetHeader();" id="nav-bookings" class="font-bold text-slate-600 hover:text-blue-600 transition-colors uppercase tracking-tight">Bookings</button>
             </nav>
 
-            <button onclick="navigateTo('bookings')" class="bg-blue-600 text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all text-sm">
-                Request Performance
+            <button onclick="navigateTo('bookings'); resetHeader();" class="bg-blue-600 text-white px-8 py-3 rounded-full font-black shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all text-sm uppercase tracking-tighter">
+                Reserve Show
             </button>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 py-12">
+    <!-- CONTENT WRAPPER -->
+    <!-- LEARNING NOTE 3: Top Padding
+         The 'pt-[14rem]' ensures your first section doesn't start underneath the fixed header. 
+         If you change the header height, adjust this padding to match. -->
+    <div class="pt-[14rem]"> 
+        <main class="max-w-6xl mx-auto px-6 py-12">
 
-        <!-- VIEW: HOME -->
-        <div id="view-home" class="view-section active space-y-32">
-            
-            <!-- Hero -->
-            <section class="text-center max-w-4xl mx-auto pt-12">
-                <h1 class="text-6xl md:text-8xl font-black tracking-tight mb-8">
-                    Physics, <span class="text-blue-600">meet FUN!</span>
-                </h1>
-                <p class="text-xl text-slate-500 leading-relaxed mb-10">
-                    High-performance bubble shows engineered for fleeting moments of shared magic. We transform public space into temporary realms of wonder.
-                </p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <button onclick="navigateTo('shop')" class="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold hover:scale-105 transition-transform">Explore Performances</button>
-                    <a href="#mission" class="bg-white border border-slate-200 px-10 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-colors text-center">The Philosophy</a>
-                </div>
-            </section>
-
-            <!-- Philosophy Section -->
-            <section id="mission" class="grid md:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8">
-                    <div class="inline-block bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-bold tracking-wide uppercase">The Purpose</div>
-                    <h2 class="text-4xl font-bold leading-tight text-slate-900">Engineering joy is serious work.</h2>
-                    <div class="space-y-4">
-                        <p class="text-slate-600 text-lg leading-relaxed">
-                            Bubble Labs exists to manufacture wonder. In a world increasingly defined by the permanent and the digital, we specialize in the ephemeral. Bubbles are a bridge between complex physics and simple human connection.
-                        </p>
-                        <p class="text-slate-600 text-lg leading-relaxed font-medium">
-                            We curate these moments because joy shouldn't be a luxury. It is a fundamental atmospheric requirement for a healthy community.
-                        </p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-6 pt-4 border-t border-slate-200">
-                        <div>
-                            <div class="text-3xl font-black text-blue-600 italic">Kinetic</div>
-                            <div class="text-sm text-slate-400 font-bold uppercase tracking-wider">Atmospheric Art</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-black text-blue-600 italic">CommunityJOY</div>
-                            <div class="text-sm text-slate-400 font-bold uppercase tracking-wider">Reciprocity</div>
-                        </div>
-                    </div>
-                </div>
+            <!-- VIEW: HOME -->
+            <div id="view-home" class="view-section active space-y-32">
                 
-                <div class="space-y-4">
-                    <div class="bg-slate-200 aspect-video rounded-3xl flex items-center justify-center text-slate-400 font-medium italic overflow-hidden shadow-2xl relative group">
-                        <img src="image2.jpg" alt="Dan in the Lab" onerror="this.src='https://placehold.co/800x450/1e293b/94a3b8?text=Image+Missing'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
-                    </div>
-                    <p class="photo-caption text-xs text-slate-400 italic text-center px-8 leading-relaxed">
-                        Fig 1.1: Chief Joy Engineer: Professor Dan, testing localized atmospheric disturbances.
+                <section class="text-center max-w-4xl mx-auto pt-12">
+                    <h1 class="text-6xl md:text-8xl font-black tracking-tight mb-8">
+                        Physics, <span class="text-blue-600">meet FUN!</span>
+                    </h1>
+                    <p class="text-xl text-slate-500 leading-relaxed mb-10">
+                        High-performance bubble shows engineered for fleeting moments of shared magic. We transform public space into temporary realms of wonder.
                     </p>
-                </div>
-            </section>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button onclick="navigateTo('shop')" class="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold hover:scale-105 transition-transform">Explore Performances</button>
+                        <a href="#mission" class="bg-white border border-slate-200 px-10 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-colors text-center">The Philosophy</a>
+                    </div>
+                </section>
 
-            <!-- Testimonials -->
-            <section>
-                <h2 class="text-3xl font-bold text-center mb-16">Atmospheric Feedback</h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                        <div class="text-blue-600 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">"The scale was incredible. Professor Dan changed the entire mood of the street for two hours."</p>
-                        <span class="font-bold text-slate-900">— Event Coordinator</span>
-                    </div>
-                    <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                        <div class="text-blue-600 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">"A brilliant intersection of wonder and fun. Mesmerizing for all ages."</p>
-                        <span class="font-bold text-slate-900">— Community Curator</span>
-                    </div>
-                    <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                        <div class="text-blue-600 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 mb-6 italic leading-relaxed">"Reliable, high-output, and undeniably beautiful. Our go-to for instant wonder."</p>
-                        <span class="font-bold text-slate-900">— Project Lead</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Archives -->
-            <section>
-                <div class="flex justify-between items-end mb-12">
-                    <div>
-                        <h2 class="text-3xl font-bold">The Archives</h2>
-                        <p class="text-slate-500">Documenting fleeting wonders.</p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <img src="gallery-1.jpg" alt="Session" onerror="this.src='https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+1'" class="aspect-square bg-slate-200 rounded-2xl object-cover hover:opacity-90 transition-opacity">
-                    <img src="gallery-2.jpg" alt="Session" onerror="this.src='https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+2'" class="aspect-square bg-slate-200 rounded-2xl object-cover hover:opacity-90 transition-opacity">
-                    <img src="gallery-3.jpg" alt="Session" onerror="this.src='https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+3'" class="aspect-square bg-slate-200 rounded-2xl object-cover hover:opacity-90 transition-opacity">
-                    <img src="gallery-4.jpg" alt="Session" onerror="this.src='https://placehold.co/400x400/e2e8f0/94a3b8?text=Session+4'" class="aspect-square bg-slate-200 rounded-2xl object-cover hover:opacity-90 transition-opacity">
-                </div>
-            </section>
-        </div>
-
-        <!-- VIEW: SHOP (Performances) -->
-        <div id="view-shop" class="view-section">
-            <div class="grid lg:grid-cols-3 gap-12">
-                <div class="lg:col-span-2 space-y-12">
-                    <h2 class="text-4xl font-bold">Performance Tiers</h2>
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-4">
-                            <span class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold">1</span>
-                            <h3 class="text-xl font-bold text-slate-700 uppercase tracking-widest text-sm">Select Scale</h3>
+                <section id="mission" class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="space-y-8">
+                        <div class="inline-block bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-bold tracking-wide uppercase">The Purpose</div>
+                        <h2 class="text-4xl font-bold leading-tight text-slate-900">Engineering joy is serious work.</h2>
+                        <div class="space-y-4">
+                            <p class="text-slate-600 text-lg leading-relaxed">
+                                Bubble Labs exists to manufacture wonder. Bubbles are a bridge between complex physics and simple human connection.
+                            </p>
+                            <p class="text-slate-600 text-lg leading-relaxed font-medium">
+                                We curate these moments because joy is a fundamental atmospheric requirement for a healthy community.
+                            </p>
                         </div>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <button onclick="setBase('Roving', 175)" id="btn-roving" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all active-choice">
-                                <div class="font-bold text-xl">Roving</div>
-                                <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Continuous, subtle for open gatherings.</p>
-                                <span class="text-blue-600 font-bold text-2xl">$175.00 p/h</span>
-                            </button>
-                            <button onclick="setBase('Stationary', 210)" id="btn-stationary" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all">
-                                <div class="font-bold text-xl">Stationary</div>
-                                <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Immersive, focused setup for full-range wonder.</p>
-                                <span class="text-blue-600 font-bold text-2xl">$210.00 p/h</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="space-y-6">
-                         <div class="flex items-center gap-4">
-                            <span class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold">2</span>
-                            <h3 class="text-xl font-bold text-slate-700 uppercase tracking-widest text-sm">Visual Mood</h3>
-                        </div>
-                        <div class="flex flex-wrap gap-4" id="color-palette"></div>
-                    </div>
-                </div>
-
-                <!-- Sticky Summary -->
-                <div class="lg:col-span-1">
-                    <div class="glass-card rounded-[2.5rem] shadow-xl p-8 sticky top-32">
-                        <h3 class="text-xl font-bold mb-8">Package Summary</h3>
-                        <div class="bg-slate-50 rounded-2xl p-10 mb-8 flex justify-center items-center">
-                            <svg id="machine-svg" viewBox="0 0 100 100" class="w-32 h-32 transition-all duration-500 drop-shadow-xl">
-                                <rect id="svg-body" x="20" y="30" width="60" height="50" rx="15" fill="#3b82f6" />
-                                <circle cx="50" cy="45" r="10" fill="white" fill-opacity="0.3" />
-                                <rect x="35" y="15" width="30" height="15" rx="4" fill="#1e293b" />
-                                <circle cx="30" cy="85" r="8" fill="#0f172a" />
-                                <circle cx="70" cy="85" r="8" fill="#0f172a" />
-                            </svg>
-                        </div>
-                        <div class="space-y-4 mb-10 text-sm">
-                            <div class="flex justify-between font-medium">
-                                <span class="text-slate-400 text-xs uppercase tracking-widest">Scale</span>
-                                <span id="cart-core" class="text-slate-900 font-bold">Roving</span>
+                        <div class="grid grid-cols-2 gap-6 pt-4 border-t border-slate-200">
+                            <div>
+                                <div class="text-3xl font-black text-blue-600 italic uppercase">Kinetic</div>
+                                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">Atmospheric Art</div>
                             </div>
-                            <div class="flex justify-between font-medium">
-                                <span class="text-slate-400 text-xs uppercase tracking-widest">Mood</span>
-                                <span id="cart-color" class="text-slate-900 font-bold">Electric Blue</span>
+                            <div>
+                                <div class="text-3xl font-black text-blue-600 italic uppercase">JOY</div>
+                                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">Reciprocity</div>
                             </div>
                         </div>
-                        <div class="flex justify-between items-end pb-8 border-t border-slate-100 pt-8">
-                            <span class="font-bold text-slate-400 text-xs uppercase tracking-widest">Quote Base</span>
-                            <span id="total-price" class="text-3xl font-black text-blue-600 tracking-tighter">$175.00</span>
-                        </div>
-                        <button id="order-trigger" class="w-full bg-blue-600 text-white font-bold py-5 rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
-                            Reserve
-                        </button>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- VIEW: BOOKINGS -->
-        <div id="view-bookings" class="view-section max-w-3xl mx-auto">
-            <div class="bg-white p-12 rounded-[3rem] border border-slate-200 shadow-sm">
-                <h2 class="text-4xl font-bold mb-2">Performance Inquiry</h2>
-                <p class="text-slate-400 mb-12 italic">Engineering the atmosphere for community and celebration.</p>
-                <form class="space-y-8" id="booking-form">
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Name</label>
-                            <input type="text" name="name" required class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Enter name...">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Email</label>
-                            <input type="email" name="email" required class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Enter email...">
-                        </div>
-                    </div>
+                    
                     <div class="space-y-4">
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Type</label>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <label class="relative cursor-pointer group">
-                                <input type="radio" name="bookingType" value="paid" class="peer hidden" checked>
-                                <div class="p-6 border-2 border-slate-100 rounded-2xl peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all">
-                                    <div class="font-bold text-slate-900">Paid</div>
-                                    <div class="text-xs text-slate-400">Corporate, Weddings, etc.</div>
-                                </div>
-                            </label>
-                            <label class="relative cursor-pointer group">
-                                <input type="radio" name="bookingType" value="community" class="peer hidden">
-                                <div class="p-6 border-2 border-slate-100 rounded-2xl peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all">
-                                    <div class="font-bold text-slate-900">Community Joy</div>
-                                    <div class="text-xs text-slate-400">Non-Profit, Public Space.</div>
-                                </div>
-                            </label>
+                        <div class="bg-slate-200 aspect-video rounded-3xl overflow-hidden shadow-2xl relative group">
+                            <!-- Main Photo Slot -->
+                            <img src="image2.jpg" alt="Dan in the Lab" onerror="this.src='https://placehold.co/800x450/1e293b/94a3b8?text=Image+Missing'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
+                        </div>
+                        <p class="photo-caption text-[10px] text-slate-400 italic text-center px-8 leading-relaxed">
+                            Fig 1.1: Chief Joy Engineer testing localized atmospheric disturbances.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Testimonials -->
+                <section>
+                    <h2 class="text-3xl font-bold text-center mb-16 uppercase tracking-tighter">Atmospheric Feedback</h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                            <div class="text-blue-600 mb-4 font-black">★★★★★</div>
+                            <p class="text-slate-600 mb-6 italic leading-relaxed text-sm">"The scale was incredible. Professor Dan changed the entire mood of the street for two hours."</p>
+                            <span class="font-bold text-slate-900 text-xs">— Event Coordinator</span>
+                        </div>
+                        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                            <div class="text-blue-600 mb-4 font-black">★★★★★</div>
+                            <p class="text-slate-600 mb-6 italic leading-relaxed text-sm">"A brilliant intersection of wonder and fun. Mesmerizing for all ages."</p>
+                            <span class="font-bold text-slate-900 text-xs">— Community Curator</span>
+                        </div>
+                        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                            <div class="text-blue-600 mb-4 font-black">★★★★★</div>
+                            <p class="text-slate-600 mb-6 italic leading-relaxed text-sm">"Reliable, high-output, and undeniably beautiful. Our go-to for instant wonder."</p>
+                            <span class="font-bold text-slate-900 text-xs">— Project Lead</span>
                         </div>
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Vision</label>
-                        <textarea name="details" rows="5" class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Tell us about the magic..."></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl hover:bg-black transition-all">Transmit Inquiry</button>
-                </form>
+                </section>
             </div>
-        </div>
-    </main>
+
+            <!-- VIEW: SHOP / PERFORMANCES -->
+            <div id="view-shop" class="view-section">
+                <div class="grid lg:grid-cols-3 gap-12">
+                    <div class="lg:col-span-2 space-y-12">
+                        <h2 class="text-4xl font-bold uppercase tracking-tighter">Performance Tiers</h2>
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-4">
+                                <span class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold">1</span>
+                                <h3 class="text-xl font-bold text-slate-700 uppercase tracking-widest text-sm">Select Scale</h3>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <button onclick="setBase('Roving', 175)" id="btn-roving" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all active-choice">
+                                    <div class="font-bold text-xl uppercase tracking-tighter">Roving</div>
+                                    <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Continuous, subtle for open gatherings.</p>
+                                    <span class="text-blue-600 font-black text-2xl">$175.00 p/h</span>
+                                </button>
+                                <button onclick="setBase('Stationary', 210)" id="btn-stationary" class="p-8 text-left bg-white border-2 border-slate-200 rounded-[2rem] hover:border-blue-300 transition-all">
+                                    <div class="font-bold text-xl uppercase tracking-tighter">Stationary</div>
+                                    <p class="text-slate-400 text-sm mt-2 mb-6 leading-relaxed">Immersive setup for full-range wonder.</p>
+                                    <span class="text-blue-600 font-black text-2xl">$210.00 p/h</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1">
+                        <div class="glass-card rounded-[2.5rem] shadow-xl p-8 sticky top-48">
+                            <h3 class="text-xl font-bold mb-8 uppercase tracking-tighter">Summary</h3>
+                            <div class="bg-slate-50 rounded-2xl p-10 mb-8 flex justify-center items-center">
+                                <svg id="machine-svg" viewBox="0 0 100 100" class="w-32 h-32 transition-all duration-500 drop-shadow-xl">
+                                    <rect id="svg-body" x="20" y="30" width="60" height="50" rx="15" fill="#3b82f6" />
+                                    <circle cx="50" cy="45" r="10" fill="white" fill-opacity="0.3" />
+                                </svg>
+                            </div>
+                            <div class="flex justify-between items-end pb-8 border-t border-slate-100 pt-8">
+                                <span class="font-bold text-slate-400 text-[10px] uppercase tracking-widest">Base Rate</span>
+                                <span id="total-price" class="text-3xl font-black text-blue-600 tracking-tighter">$175.00</span>
+                            </div>
+                            <button id="order-trigger" class="w-full bg-blue-600 text-white font-black py-5 rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 uppercase tracking-tighter">
+                                Reserve
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: BOOKINGS -->
+            <div id="view-bookings" class="view-section max-w-3xl mx-auto">
+                <div class="bg-white p-12 rounded-[3rem] border border-slate-200 shadow-sm">
+                    <h2 class="text-4xl font-bold mb-2 uppercase tracking-tighter">Inquiry</h2>
+                    <p class="text-slate-400 mb-12 italic">Atmospheric engineering for community and celebration.</p>
+                    <form class="space-y-8" id="booking-form">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <input type="text" name="name" required class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl outline-none" placeholder="NAME">
+                            <input type="email" name="email" required class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl outline-none" placeholder="EMAIL">
+                        </div>
+                        <textarea name="details" rows="5" class="w-full px-6 py-4 bg-slate-50 border-0 rounded-2xl outline-none" placeholder="TELL US ABOUT THE MAGIC..."></textarea>
+                        <button type="submit" class="w-full bg-slate-900 text-white font-black py-5 rounded-2xl hover:bg-black transition-all uppercase tracking-widest">Transmit</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <!-- Modal Success -->
     <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-6 z-[100]">
         <div class="bg-white rounded-[2.5rem] p-10 max-w-sm w-full text-center shadow-2xl">
             <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-black italic">!</div>
             <h2 class="text-2xl font-bold text-slate-900 mb-2">Transmitted</h2>
-            <p id="modal-msg" class="text-slate-500 mb-8">Session request logged.</p>
             <button onclick="closeModal()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl">Dismiss</button>
         </div>
     </div>
@@ -273,16 +267,27 @@
         const auth = getAuth(app);
         let currentUserId = null;
 
-        const palette = [
-            { name: 'Neon Green', hex: '#39ff14' },
-            { name: 'Electric Blue', hex: '#3b82f6' },
-            { name: 'Amber Glow', hex: '#f97316' },
-            { name: 'Deep Carbon', hex: '#1e293b' },
-            { name: 'Ghost White', hex: '#f8fafc' }
-        ];
+        // LEARNING NOTE 4: The Scroll Listener
+        // This monitors how far the user has scrolled. If they cross 100px, 
+        // it triggers the CSS rules that 'push' the header away.
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+                document.body.classList.remove('header-expanded');
+            }
+        });
 
-        let state = { base: { name: 'Roving', price: 175 }, color: palette[1] };
+        window.toggleHeader = () => {
+            document.body.classList.toggle('header-expanded');
+        };
 
+        window.resetHeader = () => {
+            document.body.classList.remove('header-expanded');
+        };
+
+        // NAVIGATION
         window.navigateTo = (viewId) => {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
             const target = document.getElementById(`view-${viewId}`);
@@ -294,45 +299,22 @@
             window.scrollTo(0, 0);
         };
 
-        window.buildPalette = () => {
-            const container = document.getElementById('color-palette');
-            if (!container) return;
-            container.innerHTML = '';
-            palette.forEach(color => {
-                const btn = document.createElement('button');
-                btn.className = `w-14 h-14 rounded-[1.2rem] border-4 border-white shadow-sm ring-2 ring-slate-100 transition-all hover:scale-110 ${state.color.name === color.name ? 'ring-blue-600 scale-110' : ''}`;
-                btn.style.backgroundColor = color.hex;
-                btn.onclick = () => {
-                    state.color = color;
-                    document.querySelectorAll('#color-palette button').forEach(b => b.classList.remove('ring-blue-600', 'scale-110'));
-                    btn.classList.add('ring-blue-600', 'scale-110');
-                    updateDisplay();
-                };
-                container.appendChild(btn);
-            });
-        };
+        // PERFORMANCE STATE
+        let state = { base: { name: 'Roving', price: 175 } };
 
         window.setBase = (name, price) => {
             state.base = { name, price };
-            const rovingBtn = document.getElementById('btn-roving');
-            const stationaryBtn = document.getElementById('btn-stationary');
-            if (rovingBtn) rovingBtn.classList.toggle('active-choice', name === 'Roving');
-            if (stationaryBtn) stationaryBtn.classList.toggle('active-choice', name === 'Stationary');
-            updateDisplay();
+            document.getElementById('btn-roving').classList.toggle('active-choice', name === 'Roving');
+            document.getElementById('btn-stationary').classList.toggle('active-choice', name === 'Stationary');
+            window.updateDisplay();
         };
 
         window.updateDisplay = () => {
-            const cartCore = document.getElementById('cart-core');
-            const cartColor = document.getElementById('cart-color');
             const totalPrice = document.getElementById('total-price');
-            const svgBody = document.getElementById('svg-body');
-
-            if (cartCore) cartCore.innerText = state.base.name;
-            if (cartColor) cartColor.innerText = state.color.name;
             if (totalPrice) totalPrice.innerText = `$${state.base.price.toFixed(2)}`;
-            if (svgBody) svgBody.style.fill = state.color.hex;
         };
 
+        // SUBMISSIONS
         window.submitData = async (coll, data) => {
             if (!currentUserId) return;
             const entryId = crypto.randomUUID();
@@ -340,7 +322,7 @@
                 await setDoc(doc(db, `/artifacts/${appId}/public/data/${coll}/${entryId}`), {
                     ...data, uid: currentUserId, timestamp: serverTimestamp()
                 });
-                showModal(coll === 'orders' ? 'Atmospheric package archived.' : 'Inquiry transmitted to the lab.');
+                window.showModal(coll === 'orders' ? 'Atmospheric package archived.' : 'Inquiry transmitted to the lab.');
             } catch (err) { console.error(err); }
         };
 
@@ -357,9 +339,7 @@
         }
 
         window.showModal = (msg) => {
-            const modalMsg = document.getElementById('modal-msg');
             const modal = document.getElementById('modal');
-            if (modalMsg) modalMsg.innerText = msg;
             if (modal) modal.classList.remove('hidden');
         };
 
@@ -370,15 +350,10 @@
 
         window.addEventListener('load', async () => {
             try {
-                if (typeof __initial_auth_token !== 'undefined') {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                if (typeof __initial_auth_token !== 'undefined') await signInWithCustomToken(auth, __initial_auth_token);
+                else await signInAnonymously(auth);
             } catch (e) { console.error(e); }
-
             onAuthStateChanged(auth, user => { if(user) currentUserId = user.uid; });
-            window.buildPalette();
             window.updateDisplay();
         });
     </script>
